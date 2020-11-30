@@ -6,21 +6,21 @@
 #    By: cdrennan <cdrennan@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/11/30 12:49:18 by cdrennan          #+#    #+#              #
-#    Updated: 2020/11/30 13:01:05 by cdrennan         ###   ########.fr        #
+#    Updated: 2020/11/30 14:51:25 by cdrennan         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = libasm.a
-CC = nasm
-CFLAFS = -f macho64
 
-SOURCES = ft_strlen.s
+SOURCES = ft_strlen.s ft_strcpy.s ft_strcmp.s
 OBJS = $(SOURCES:.s=.o)
 
+%.o:%.s
+	nasm -f macho64 $<
 
 all: $(NAME)
 
-$(NAME):
+$(NAME): $(OBJS)
 	ar rc $(NAME) $(OBJS)
 
 clean:
@@ -32,7 +32,8 @@ fclean: clean
 re: fclean all
 
 test:
-	gcc -Wall -Werror -Wextra -L. -lasm -o main.c
+	gcc main.c -Wall -Werror -Wextra -L. -lasm
+	./a.out | cat -e
 
 
 .PHONY: all re clean fclean

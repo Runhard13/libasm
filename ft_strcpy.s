@@ -1,29 +1,38 @@
 ;/* ************************************************************************** */
 ;/*                                                                            */
 ;/*                                                        :::      ::::::::   */
-;/*   ft_strlen.s                                        :+:      :+:    :+:   */
+;/*   ft_strcpy.s                                        :+:      :+:    :+:   */
 ;/*                                                    +:+ +:+         +:+     */
 ;/*   By: cdrennan <cdrennan@student.42.fr>          +#+  +:+       +#+        */
 ;/*                                                +#+#+#+#+#+   +#+           */
-;/*   Created: 2020/11/30 11:40:55 by cdrennan          #+#    #+#             */
-;/*   Updated: 2020/11/30 11:40:55 by cdrennan         ###   ########.fr       */
+;/*   Created: 2020/11/30 13:30:27 by cdrennan          #+#    #+#             */
+;/*   Updated: 2020/11/30 13:30:27 by cdrennan         ###   ########.fr       */
 ;/*                                                                            */
 ;/* ************************************************************************** */
 
-global _ft_strlen
+
+global _ft_strcpy
 
 section .text
 
-_ft_strlen:
-    xor rax, rax            ; set return value to 0
-    jmp loop                ; start loop for len
+_ft_strcpy:
+    xor rcx, rcx                ; i = 0;
+    xor rdx, rdx                ; tmp = 0;
+    cmp rsi, 0                  ; if (!src)
+    jz return
+    jmp copy
 
 increment:
-    inc rax                 ; len++;
+    inc rcx
 
-loop:
-    cmp byte [rdi + rax], 0 ; compare str[len] and 0
-    jne increment          ; len++ if not equal
+copy:
+    mov dl, byte [rsi + rcx]   ; tmp = src[i]
+    mov byte [rdi + rcx], dl   ; dst[i] = tmp
+    cmp rdx, 0
+    jnz increment
 
 return:
+    mov rax, rdi                ; return(dst)
     ret
+
+
